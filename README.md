@@ -1,6 +1,3 @@
-Here is your complete, publication-ready README.md compiled into a single markdown code block so you can easily copy and paste it into your project:
-
-Markdown
 # TrekSafe GB
 > *An AI-powered high-altitude safety and expedition risk evaluation platform tailored for Gilgit-Baltistan, Pakistan.*
 
@@ -60,8 +57,119 @@ Instead of relying on fragmented forum posts or static guidebooks, users obtain 
 The core intelligence of TrekSafe GB relies on Google Gemini's structured output capabilities. The backend formats route context and user-submitted health and experience data into a system prompt that mandates strict structural JSON compliance.
 
 #### User Workflow
-```text
+'''text
+[User Selects Route & Inputs Profile] 
+               │
+               ▼
+   [POST /api/assess-risk]
+               │
+               ▼
+[Prompt Construction + Route Binding]      
+│
+               ▼
+ [Gemini API (with Fallback & Retry)]
+               │
+               ▼
+ [JSON Parsing & Markdown Sanitization]
+               │
+               ▼
+[Structured Assessment Rendered on UI]
 
----
+## Input and Output
 
-## Ddfggg
+### Input: Selected route object ID, planned travel season, group size, experience level ("Beginner", "Intermediate", "Advanced"), and optional health notes (e.g., past asthma, history of altitude sickness).
+
+###Output: Validated JSON containing an overall risk rating, two-sentence safety outlook, specific hazard metrics, red-flag warnings, and customized preparation/packing lists.
+
+## Model Parameters & Strategy
+
+### Model: gemini-3.5-flash (Primary) with fallback to gemini-3.1-flash-lite.
+
+### Temperature: 0.2 (Low temperature configured via strict JSON system instructions to prioritize factual safety guidelines over creative text generation).
+
+### Prompt Engineering Strategy: Few-shot structural framing paired with explicit schema definition and zero-trust input validation.
+
+## Complete AI System Prompt / Instructions
+You are an expert high-altitude safety and expedition risk evaluator for Gilgit-Baltistan, Pakistan.
+
+Analyze the trekker's profile against the provided route data and return a JSON evaluation.
+
+ROUTE DETAILS:
+- Name: ${selectedRoute.name}
+- Region: ${selectedRoute.region}
+- Distance: ${selectedRoute.distanceKm} km
+- Max Altitude: ${selectedRoute.maxAltitudeMeters} m
+- Base Difficulty: ${selectedRoute.difficulty}
+- Checkpoints: ${selectedRoute.checkpoints.map((c) => `${c.name} (${c.elevationMeters}m)`).join(', ')}
+- Permits: Locals: "${selectedRoute.permitsRequired.locals}" | Foreigners: "${selectedRoute.permitsRequired.foreigners}"
+
+TREKKER PROFILE:
+- Planned Travel Date/Season: ${season || 'Not specified'}
+- Group Size: ${groupSize || 1}
+- Self-Reported Experience Level: ${experienceLevel || 'Beginner'}
+- Health Considerations: ${healthNotes || 'None'}
+
+INSTRUCTIONS:
+Return strictly a valid JSON object matching this structure:
+{
+  "overallRiskLevel": "Low",
+  "summary": "Short 2-sentence summary of overall safety outlook.",
+  "hazards": {
+    "altitude": { "level": "Low", "details": "Explanation of AMS/hypoxia risks" },
+    "weather": { "level": "Low", "details": "Explanation of thermal hazards" },
+    "terrain": { "level": "Low", "details": "Explanation of physical hazards" },
+    "permits": { "level": "Low", "details": "Clear steps on paperwork needed" }
+  },
+  "redFlags": ["Specific warning 1", "Specific warning 2"],
+  "packingChecklist": ["Essential item 1", "Essential item 2"],
+  "prepChecklist": ["Preparation step 1", "Preparation step 2"]
+}
+
+## Architecture / Workflow
+
+┌─────────────────────────────────────────────────────────┐
+│                      Client Browser                     │
+│   (User submits route parameters & health inputs)       │
+└────────────────────────────┬────────────────────────────┘
+                             │
+                             │ POST /api/assess-risk
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                   Next.js API Route                     │
+│   1. Validates request payload against ROUTES_DATA      │
+│   2. Constructs prompt with localized region data        │
+└────────────────────────────┬────────────────────────────┘
+                             │
+                             │ REST API Fetch
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                 Google Gemini API Engine                │
+│   1. Executes query against gemini-3.5-flash            │
+│   2. Fallback to gemini-3.1-flash-lite on 503/429       │
+└────────────────────────────┬────────────────────────────┘
+                             │
+                             │ Raw Response String
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                   Next.js API Route                     │
+│   1. Strips markdown backticks (```json)                 │
+│   2. Validates JSON structure                           │
+│   3. Returns structured JSON to Client                  │
+└────────────────────────────┬────────────────────────────┘
+                             │
+                             │ JSON Response
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                      Client Browser                     │
+│   Renders risk dials, hazard cards, & checklists        │
+└────────────────────────────┴────────────────────────────┘
+
+## Screenshots
+### Trip & Trekker Profile Input Form
+<img width="1030" height="640" alt="Empty Form" src="https://github.com/user-attachments/assets/0071ec12-8fa0-4e7f-bfb5-7f18a687728e" />
+
+### AI Risk Pipeline Processing
+<img width="1019" height="622" alt="In Action" src="https://github.com/user-attachments/assets/f3bba6d8-7c41-408b-b473-70e4f56a374f" />
+
+### Generated AI Risk Evaluation Report
+<img width="828" height="646" alt="Good Response" src="https://github.com/user-attachments/assets/1acecb88-bd31-41ef-97b6-704a14fedbb2" />
