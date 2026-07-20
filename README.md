@@ -81,6 +81,7 @@ The AI feature takes the user's route choice, physical profile, travel timing, a
 
 ### Complete AI System Prompt / Instructions
 
+```text
 You are an expert high-altitude safety and expedition risk evaluator for Gilgit-Baltistan, Pakistan.
 
 Analyze the trekker's profile against the provided route data and return a JSON evaluation.
@@ -115,34 +116,3 @@ Return strictly a valid JSON object matching this structure:
   "packingChecklist": ["Essential item 1", "Essential item 2"],
   "prepChecklist": ["Preparation step 1", "Preparation step 2"]
 }
-Tools, Services, and AI Models UsedCategoryTool / Service / ModelUsage in ProjectFrontend FrameworkNext.js 14 (App Router)React server/client components and page layoutsStylingTailwind CSS / Lucide ReactModern dark-mode UI layout and dynamic iconsProgramming LanguageTypeScriptType safety for API payloads, routes, and JSON parsingAI API & ModelsGoogle Gemini REST API (gemini-3.5-flash, gemini-3.1-flash-lite)Generative risk analysis and structured output generationHosting & DeploymentVercelProduction hosting, automatic CI/CD builds, and serverless API executionVersion ControlGit & GitHubSource code management and repository trackingScreenshots1. Trip & Trekker Profile Input FormThe main intake portal where trekkers select their high-altitude route, travel dates, group size, experience tier, and health considerations.2. AI Risk Pipeline ProcessingReal-time AI loading state evaluating weather vectors, elevation gradients, and permit protocols via Next.js serverless API.3. Generated AI Risk Evaluation ReportThe structured evaluation dashboard featuring overall risk metrics, specific hazard badges (Altitude, Weather, Terrain, Permits), key red flags, tailored packing checklists, and actionable prep steps.How to Run the ProjectPrerequisitesNode.js: v18.x or higher installed.npm: v9.x or higher installed.Google Gemini API Key: Obtainable from Google AI Studio.Installation & SetupClone the repository:Bashgit clone [https://github.com/sayyamullahbaig8-blip/treksafe-gb.git](https://github.com/sayyamullahbaig8-blip/treksafe-gb.git)
-cd treksafe-gb
-Install dependencies:Bashnpm install
-Configure Environment Variables:Create a .env.local file in the root directory:Bashcp .env.example .env.local
-Add your Gemini API Key:Code snippetGEMINI_API_KEY=your_actual_gemini_api_key_here
-Verify Screenshot Image Paths:Ensure your screenshot files exist in your project structure:public/images/Empty Form.pngpublic/images/In Action.pngpublic/images/Good Response.pngStart the local development server:Bashnpm run dev
-View in browser:Open http://localhost:3000 to interact with TrekSafe GB.Folder StructurePlaintexttreksafe-gb/
-├── app/
-│   ├── api/
-│   │   └── assess-risk/
-│   │       └── route.ts         # Serverless route with Gemini integration & fallback logic
-│   ├── favicon.ico
-│   ├── globals.css              # Global styling & Tailwind directives
-│   ├── layout.tsx               # Root application layout
-│   └── page.tsx                 # Main application dashboard
-├── components/
-│   ├── HazardCard.tsx           # Individual risk pillar card
-│   ├── Navbar.tsx               # Top header branding
-│   └── RiskReport.tsx           # Rendered evaluation report dashboard
-├── lib/
-│   └── routesData.ts            # Localized Gilgit-Baltistan routes database
-├── public/
-│   └── images/                  # Application screenshots
-│       ├── Empty Form.png
-│       ├── Good Response.png
-│       └── In Action.png
-├── .env.local                   # API keys configuration (ignored by git)
-├── next.config.mjs              # Next.js settings
-├── package.json                 # Project dependencies
-├── tailwind.config.ts           # Tailwind theme configuration
-└── tsconfig.json                # TypeScript settings
