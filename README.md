@@ -75,7 +75,23 @@ The core intelligence of TrekSafe GB relies on Google Gemini's structured output
                ▼
 [Structured Assessment Rendered on UI]
 
-Input and OutputInput: Selected route object ID, planned travel season, group size, experience level ("Beginner", "Intermediate", "Advanced"), and optional health notes (e.g., past asthma, history of altitude sickness).Output: Validated JSON containing an overall risk rating, two-sentence safety outlook, specific hazard metrics, red-flag warnings, and customized preparation/packing lists.Model Parameters & StrategyModel: gemini-3.5-flash (Primary) with fallback to gemini-3.1-flash-lite.Temperature: 0.2 (Low temperature configured via strict JSON system instructions to prioritize factual safety guidelines over creative text generation).Prompt Engineering Strategy: Few-shot structural framing paired with explicit schema definition and zero-trust input validation.Complete AI System Prompt / InstructionsPlaintextYou are an expert high-altitude safety and expedition risk evaluator for Gilgit-Baltistan, Pakistan.
+## Input and Output
+
+### Input: Selected route object ID, planned travel season, group size, experience level ("Beginner", "Intermediate", "Advanced"), and
+optional health notes (e.g., past asthma, history of altitude sickness).
+
+### Output: Validated JSON containing an overall risk rating, two-sentence safety outlook, specific hazard metrics, red-flag warnings,
+and customized preparation/packing lists.
+
+## Model Parameters & Strategy
+
+### Model: gemini-3.5-flash (Primary) with fallback to gemini-3.1-flash-lite.
+
+### Temperature: 0.2 (Low temperature configured via strict JSON system instructions to prioritize factual safety guidelines over creative text generation).
+### Prompt Engineering Strategy: Few-shot structural framing paired with explicit schema definition and zero-trust input validation.
+
+## Complete AI System Prompt /
+InstructionsPlaintextYou are an expert high-altitude safety and expedition risk evaluator for Gilgit-Baltistan, Pakistan.
 
 Analyze the trekker's profile against the provided route data and return a JSON evaluation.
 
