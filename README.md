@@ -23,7 +23,7 @@ High-altitude trekking in the Karakoram and Himalayan ranges (e.g., K2 Base Camp
 
 ## Live Demo
 
-* **LIVE Deployed URL:** [https://treksafe-gb.vercel.app](https://treksafe-gb.vercel.app)
+* **LIVE Deployed URL:** [https://treksafe-gb.vercel.app](https://trek-safe-gb.vercel.app/)
 * **Status:** Live & Accessible. Users can test expedition risk generation instantly without requiring initial registration.
 
 ---
@@ -48,6 +48,19 @@ High-altitude trekking in the Karakoram and Himalayan ranges (e.g., K2 Base Camp
 * **Multi-Model Fallback Chain:** Automatically falls back from `gemini-3.5-flash` to `gemini-3.1-flash-lite` if an endpoint is unavailable.
 * **Exponential Backoff:** Gracefully handles rate limits (`429`) and server overloads (`503`).
 * **Strict JSON Sanitization:** Strips markdown backticks and ensures valid structural JSON parsing.
+
+---
+
+## Screenshots
+
+### 1. Trip & Trekker Profile Input Form
+<img width="1030" height="640" alt="Empty Form" src="https://github.com/user-attachments/assets/34230be4-2927-466a-b55d-bf17ed259555" />
+
+### 2. AI Risk Pipeline Processing
+<img width="1019" height="622" alt="In Action" src="https://github.com/user-attachments/assets/3194871f-d721-406c-9d1b-8e5edbd06a6f" />
+
+### 3. Generated AI Risk Evaluation Report
+<img width="828" height="646" alt="Good Response" src="https://github.com/user-attachments/assets/120591b7-b9a3-4cf5-813b-42e3a97a1dce" />
 
 ---
 
