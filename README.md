@@ -1,88 +1,43 @@
-# TrekSafe GB
-> *An AI-powered high-altitude safety and expedition risk evaluation platform tailored for Gilgit-Baltistan, Pakistan.*
+TrekSafe GB: High-Altitude Safety and Expedition Risk EvaluatorTrekSafe GB is an advanced safety evaluation platform designed specifically for high-altitude trekking and mountaineering expeditions in the Gilgit-Baltistan region of Pakistan. Developed to assist both trekkers and tour operators, TrekSafe GB uses structural AI risk modeling to mitigate hazards, ensure permit compliance, and promote responsible mountain tourism.A. App Name, Function, and the Real Problem SolvedTrekSafe GB solves the critical problem of inadequate pre-expedition safety planning in high-altitude environments. For both local and international tourists, trekking in regions like the Karakoram and Himalayan ranges involves extreme physiological hazards, weather risks, and complex logistical requirements (permits, escorts). A lack of unified safety information often leads to Acute Mountain Sickness (AMS), thermal injury, or logistical stalling. TrekSafe GB provides instant, personalized risk diagnostics, allowing explorers to gauge whether their readiness matches the physical requirements of a selected route.B. The LIVE Deployed URLLIVE APPLICATION: https://treksafe-gb.vercel.app(Clickable and fully functional on all modern web browsers.)C. Features List: Everything TrekSafe GB Can DoTrekSafe GB provides a full-stack, data-driven experience. Key features include:1. Trip & Trekker Profile IntakeRoute Knowledgebase (ROUTES_DATA): A centralized TypeScript data repository with precise metric data for 10+ major GB routes, including checkpoints, max elevations, physical distances, and base difficulty levels.Persona Identification: Collects key trekker parameters, including experience level, planned travel season, group size, and specific medical considerations (e.g., past asthma or AMS).Dynamic Route Browsing: Trekkers can explore routes and instantaneously view key route metrics before beginning an assessment.2. AI Risk EvaluatorMultivariate Hazard Modeling: Cross-references the individual trekker’s profile (e.g., beginner + medical history) against strict route parameters (max altitude, winter weather factors) to generate tailored risk tiers.Structured Hazard Assessment: Quantifies and explains four unique risk pillars: Altitude Hazards, Weather Hazards, Terrain Complexity, and Permit Logistics.Automated Backoff & Fallback: Implements intelligent model handling (gemini-3.5-flash primary; gemini-3.1-flash-lite fallback) with exponential backoff on RESOURCE_EXHAUSTED (429) or UNAVAILABLE (503) errors.Factual Enforcement: Uses a low temperature (0.2) configuration combined with strict system instructions to prioritize life-safety data over model creativity, suppressing hallucinations.3. Preparation DashboardsTailored Checklists: Generates route-specific and season-specific preparation steps and equipment packing lists (e.g., cold-weather gear for winter treks vs. hydration focus for summer).Red Flag Warnings: Explicitly highlights highest-risk factors and "critical warning" scenarios.D. The AI Feature: What It Does and the Prompt Behind It1. Functional OverviewThe core AI intelligence of TrekSafe GB is a structured risk pipeline, rather than a conversational chatbot. It uses few-shot structural framing to ensure that Gemini acts as a highly constrained evaluator. The pipeline converts unstructured data (trekkers' profile inputs) and metric data (ROUTES_DATA) into valid, non-hallucinated JSON. This ensures safety information is always parsed correctly and never causes UI crashes.2. AI Model Instructions / System PromptPlaintextYou are an expert high-altitude safety and expedition risk evaluator for Gilgit-Baltistan, Pakistan.
 
----
+Analyze the trekker's profile against the provided route data and return a JSON evaluation.
 
-## Overview
+ROUTE DETAILS:
+- Name: ${selectedRoute.name}
+- Region: ${selectedRoute.region}
+- Distance: ${selectedRoute.distanceKm} km
+- Max Altitude: ${selectedRoute.maxAltitudeMeters} m
+- Base Difficulty: ${selectedRoute.difficulty}
+- Checkpoints: ${selectedRoute.checkpoints.map((c) => `${c.name} (${c.elevationMeters}m)`).join(', ')}
+- Permits Required: Locals: "${selectedRoute.permitsRequired.locals}" | Foreigners: "${selectedRoute.permitsRequired.foreigners}"
 
-### What the Application Does
-**TrekSafe GB** is an intelligent safety evaluation platform designed to assess, analyze, and mitigate risks for high-altitude trekking and mountaineering expeditions across the Gilgit-Baltistan region of Pakistan. By cross-referencing route topographies, elevation profiles, weather hazards, and permit requirements with a trekker's individual experience level and health parameters, TrekSafe GB produces granular, actionable risk assessments and tailored preparation checklists.
+TREKKER PROFILE:
+- Planned Travel Date/Season: ${season || 'Not specified'}
+- Group Size: ${groupSize || 1}
+- Self-Reported Experience Level: ${experienceLevel || 'Beginner'}
+- Health Considerations: ${healthNotes || 'None'}
 
-### Real-World Problem Solved
-High-altitude trekking in the Karakoram and Himalayan ranges (e.g., K2 Base Camp, Concordia, Rush Lake, Fairy Meadows) involves extreme physiological hazards, rapidly changing alpine weather, physical terrain challenges, and complex permit regulations for local and international tourists. Trekkers often lack a unified, intelligent system to gauge whether a specific route matches their personal physical readiness and health profile, leading to severe issues like Acute Mountain Sickness (AMS), thermal injury, or logistical stalling.
-
-### Target Users
-* **High-Altitude Trekkers & Mountaineers:** Beginners to seasoned mountaineers seeking personalized risk profiles and gear lists.
-* **Tour Operators & Expedition Leaders:** Outdoor guides requiring fast, structured safety overviews and permit compliance checks for client groups.
-* **Regional Tourism & Rescue Coordinators:** Organizations looking to promote standardized, tech-enabled safety awareness across remote mountain routes.
-
-### Why This Solution is Useful
-Instead of relying on fragmented forum posts or static guidebooks, users obtain real-time, personalized risk diagnostics. The platform uses structural AI processing to translate environmental data and user physical profiles into clear hazard tiers, explicit warnings, and actionable pre-departure checklists.
-
----
-
-## Live Demo
-
-* **Deployed Application:** [https://treksafe-gb.vercel.app](https://treksafe-gb.vercel.app)
-* **Status:** Live & Accessible. Users can test expedition risk generation instantly without requiring initial registration.
-
----
-
-## Features
-
-### 1. User Interface & User Experience
-* **Modern High-Contrast Design:** Optimized using Next.js 14 and Tailwind CSS with high visibility for outdoor environments.
-* **Interactive Route Selector:** Integrated dynamic route browsing based on regional data (`ROUTES_DATA`).
-* **Responsive Multi-Step Assessment Form:** Seamless input experience across mobile, tablet, and desktop viewports.
-
-### 2. AI Safety Assessment Engine
-* **Multivariate Risk Modeling:** Evaluates individual factors (group size, experience, season, health conditions) against physical route metrics (max elevation, length, checkpoints).
-* **Structured Hazard Breakdown:** Generates individual risk levels ("Low", "Moderate", "High", "Critical") across four core pillars: *Altitude*, *Weather*, *Terrain*, and *Permit Logistics*.
-* **Dynamic Packing & Preparation Lists:** Generates tailored equipment and preparation steps based on winter vs. summer conditions and user-reported medical notes.
-
-### 3. Data & State Management
-* **Centralized Route Knowledgebase:** Modular TypeScript data definitions representing routes, checkpoints, and localized permit requirements.
-* **Strict Schema Parsing:** Enforces structured JSON output parsing from the generative backend to prevent UI render failures.
-
-### 4. Resiliency & Error Handling
-* **Automated Model Fallbacks:** Built-in multi-model fallback chain (`gemini-3.5-flash`, `gemini-3.1-flash-lite`) to bypass regional model availability updates.
-* **Exponential Backoff Strategy:** Gracefully handles API rate limits (`429 RESOURCE_EXHAUSTED`) and temporary server overloads (`503 UNAVAILABLE`) with retry delays.
-* **Sanitized Parsing:** Automatically strips extraneous markdown backticks or malformed JSON blocks before client delivery.
-
----
-
-## Screenshots
-### Trip & Trekker Profile Input Form
-<img width="1030" height="640" alt="Empty Form" src="https://github.com/user-attachments/assets/0071ec12-8fa0-4e7f-bfb5-7f18a687728e" />
-
-### AI Risk Pipeline Processing
-<img width="1019" height="622" alt="In Action" src="https://github.com/user-attachments/assets/f3bba6d8-7c41-408b-b473-70e4f56a374f" />
-
-### Generated AI Risk Evaluation Report
-<img width="828" height="646" alt="Good Response" src="https://github.com/user-attachments/assets/1acecb88-bd31-41ef-97b6-704a14fedbb2" />
-
----
-
-## AI Feature
-
-### AI System Architecture & Workflow
-The core intelligence of TrekSafe GB relies on Google Gemini's structured output capabilities. The backend formats route context and user-submitted health and experience data into a system prompt that mandates strict structural JSON compliance.
-
-#### User Workflow
-```text
-[User Selects Route & Inputs Profile] 
-               │
-               ▼
-   [POST /api/assess-risk]
-               │
-               ▼
-[Prompt Construction + Route Binding]
-               │
-               ▼
- [Gemini API (with Fallback & Retry)]
-               │
-               ▼
- [JSON Parsing & Markdown Sanitization]
-               │
-               ▼
-[Structured Assessment Rendered on UI]
+INSTRUCTIONS:
+Return strictly a valid JSON object matching this structure:
+{
+  "overallRiskLevel": "Moderate",
+  "summary": "Two sentences outlining key physiological and environmental safety risks.",
+  "hazards": {
+    "altitude": { "level": "Moderate", "details": "Specific AMS/acclimatization guidance" },
+    "weather": { "level": "Low", "details": "Seasonal thermal or rainfall risks" },
+    "terrain": { "level": "Moderate", "details": "Physical trail hazard factors" },
+    "permits": { "level": "High", "details": "Necessary documentation/escorts required" }
+  },
+  "redFlags": ["Critical safety warning 1", "Critical safety warning 2"],
+  "packingChecklist": ["Essential gear item 1", "Essential gear item 2"],
+  "prepChecklist": ["Actionable preparation step 1", "Actionable preparation step 2"]
+}
+E. Tools, Services, and AI Models UsedAI Integration: Google Gemini REST API (incorporating gemini-3.5-flash and gemini-3.1-flash-lite fallbacks).Web Framework: Next.js 14 (App Router).Programming Language: TypeScript (for strict typing across data definitions and API payloads).Styling: Tailwind CSS (utility-first CSS with modern custom coloring).Icons: Lucide React.Version Control: Git and GitHub.Deployment: Vercel (CD pipeline with automated builds).F. Screenshots of the App in ActionTrekSafe GB’s progression from data input to intelligent output:Inset 1: Empty Profile FormInset 2: AI Processing PipelineInset 3: Risk Evaluation Report* Trekkers select a high-altitude route and submit experience and medical data. (Reference: image_10.png)* The real-time loading state evaluating weather vectors, elevation gradients, and permit protocols. (Reference: image_12.png)* The generated assessment featuring specific hazard gauges, critical red flags, and customized checklists. (Reference: image_11.png)G. How to Run the ProjectTo deploy TrekSafe GB locally for development:PrerequisitesNode.js (v18 or higher recommended).npm (v9 or higher).A Google Gemini API Key. (Register at Google AI Studio).Step-by-Step InstallationClone the Repository:Bashgit clone https://github.com/sayyamullahbaig8-blip/treksafe-gb.git
+cd treksafe-gb
+Install Dependencies:Bashnpm install
+Configure Environment Variables:
+Create a .env.local file in the root directory:Bashcp .env.example .env.local
+Add your API key inside .env.local:Code snippetGEMINI_API_KEY=AIzaYourActualGeminiApiKeyHere
+Run the Local Development Server:Bashnpm run dev
+Access the Application:
+Open http://localhost:3000 in your web browser. The app is now live and communicating with the Gemini API.
