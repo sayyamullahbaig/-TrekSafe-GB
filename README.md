@@ -51,19 +51,6 @@ High-altitude trekking in the Karakoram and Himalayan ranges (e.g., K2 Base Camp
 
 ---
 
-## Screenshots
-
-### 1. Trip & Trekker Profile Input Form
-<img width="1030" height="640" alt="Empty Form" src="https://github.com/user-attachments/assets/34230be4-2927-466a-b55d-bf17ed259555" />
-
-### 2. AI Risk Pipeline Processing
-<img width="1019" height="622" alt="In Action" src="https://github.com/user-attachments/assets/3194871f-d721-406c-9d1b-8e5edbd06a6f" />
-
-### 3. Generated AI Risk Evaluation Report
-<img width="828" height="646" alt="Good Response" src="https://github.com/user-attachments/assets/120591b7-b9a3-4cf5-813b-42e3a97a1dce" />
-
----
-
 ## The AI Feature
 
 ### What It Does
@@ -129,3 +116,92 @@ Return strictly a valid JSON object matching this structure:
   "packingChecklist": ["Essential item 1", "Essential item 2"],
   "prepChecklist": ["Preparation step 1", "Preparation step 2"]
 }
+```
+
+---
+
+## Screenshots
+
+### 1. Trip & Trekker Profile Input Form
+<img width="1030" height="640" alt="Empty Form" src="https://github.com/user-attachments/assets/34230be4-2927-466a-b55d-bf17ed259555" />
+
+### 2. AI Risk Pipeline Processing
+<img width="1019" height="622" alt="In Action" src="https://github.com/user-attachments/assets/3194871f-d721-406c-9d1b-8e5edbd06a6f" />
+
+### 3. Generated AI Risk Evaluation Report
+<img width="828" height="646" alt="Good Response" src="https://github.com/user-attachments/assets/120591b7-b9a3-4cf5-813b-42e3a97a1dce" />
+
+---
+
+## How to Run the Project
+### Prerequisites
+
+### 1. Node.js: v18.x or higher installed.
+
+### 2. npm: v9.x or higher installed.
+
+### 3. Google Gemini API Key: Obtainable from Google AI Studio.
+
+## Installation & Setup
+
+### 1. Clone the repository:
+```text
+git clone [https://github.com/sayyamullahbaig8-blip/treksafe-gb.git](https://github.com/sayyamullahbaig8-blip/treksafe-gb.git)
+cd treksafe-gb
+```
+
+### 2. Install dependencies:
+```text
+npm install
+```
+
+### 3. Configure Environment Variables:
+
+Create a .env.local file in the root directory:
+```text
+cp .env.example .env.local
+```
+Add your Gemini API Key:
+```text
+GEMINI_API_KEY=your_actual_gemini_api_key_here
+```
+
+### 4. Start the local development server:
+```text
+npm run dev
+```
+
+### 5. View in browser:
+```text
+Open http://localhost:3000 to interact with TrekSafe GB.
+```
+
+---
+
+## Folder Structure
+```text
+treksafe-gb/
+├── app/
+│   ├── api/
+│   │   └── assess-risk/
+│   │       └── route.ts         # Serverless route with Gemini integration & fallback logic
+│   ├── favicon.ico
+│   ├── globals.css              # Global styling & Tailwind directives
+│   ├── layout.tsx               # Root application layout
+│   └── page.tsx                 # Main application dashboard
+├── components/
+│   ├── HazardCard.tsx           # Individual risk pillar card
+│   ├── Navbar.tsx               # Top header branding
+│   └── RiskReport.tsx           # Rendered evaluation report dashboard
+├── lib/
+│   └── routesData.ts            # Localized Gilgit-Baltistan routes database
+├── public/
+│   └── images/                  # Application screenshots
+│       ├── Empty Form.png
+│       ├── Good Response.png
+│       └── In Action.png
+├── .env.local                   # API keys configuration (ignored by git)
+├── next.config.mjs              # Next.js settings
+├── package.json                 # Project dependencies
+├── tailwind.config.ts           # Tailwind theme configuration
+└── tsconfig.json                # TypeScript settings
